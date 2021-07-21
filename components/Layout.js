@@ -2,7 +2,7 @@
 import Head from "next/head";
 
 // Style Imports
-import styles from "../styles/Layout.module.css";
+import styles from "@/styles/Layout.module.css";
 import Header from "./Header";
 import Footer from "./Footer";
 
