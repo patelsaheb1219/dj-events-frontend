@@ -1,10 +1,36 @@
 // File Imports
 import Layout from "@/components/Layout";
+import { API_URL } from "@/config/index";
 
-export default function Event() {
+export default function Event(props) {
+  const { evt } = props;
   return (
     <Layout>
-      <h1>My eventt</h1>
+      <h1>{evt.name}</h1>
     </Layout>
   );
 }
+
+export async function getStaticPaths() {
+  const res = await fetch(`${API_URL}/api/events`);
+  const events = await res.json();
+  const paths = events.map(evt => ({
+    params: {slug: evt.slug}
+  }))
+  console.log("paths", paths);
+  return {
+    paths,
+    fallback: true
+  }
+}
+
+export async function getStaticProps({params: {slug}}) {
+  const response = await fetch(`${API_URL}/api/events/${slug}`)
+  const events = await response.json();
+  return {
+    props: {
+      evt: events[0]
+    },
+    revalidate: 1
+  }
+} 
